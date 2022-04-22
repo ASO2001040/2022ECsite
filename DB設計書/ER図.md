@@ -19,59 +19,73 @@ package "ECサイト" as target_system {
       １文字なら "主" とか "従" まど日本語でも記載可能
      '/
 
-    entity "顧客マスタ" as customer <m_customers> <<M,MASTER_MARK_COLOR>> {
-        + customer_code [PK]
+    entity "参加者マスタ" as customer <m_customers> <<M,MASTER_MARK_COLOR>> {
+        + cu_id [PK]
         --
-        pass
-        name
-        address
-        tel
-        mail
-        del_flag
-        reg_date
+        cu_name
+        cu_age
+        cu_status
+        cu_sei
+        cu_user
+        cu_mail
+        cu_pass
     }
     
-    entity "購入テーブル" as order <order> <<T,TRANSACTION_MARK_COLOR>> {
-        + order_id [PK]
+    entity "企業マスタ" as order <order> <<M,MASTER_MARK_COLOR>> {
+        + co_id [PK]
         --
-        # customer_code [FK]
-        purchase_date
-        total_price
+        co_name
+        co_place
+        co_hp
+        co_user
+        co_pass
     }
     
-    entity "購入詳細テーブル" as order_detail  <order_detail> <<T,TRANSACTION_MARK_COLOR>> {
-        + detail_id[PK]
-        + order_id[PK]
+    entity "ボランティア一覧テーブル" as volunteer  <volunteer> <<T,TRANSACTION_MARK_COLOR>> {
+        + v_id[PK]
         --
-        # item_code [FK]
-        price
-        num
+        v_name
+        v_place1
+        v_place2
+        v_info
+        v_comp
+        v_day
+        v_people
     }
     
-    entity "商品マスタ" as items <m_items> <<M,MASTER_MARK_COLOR>> {
-        + item_code [PK]
+     entity "ボランティア一覧の画像テーブル" as volunteer_pic  <volunteer_pic> <<T,TRANSACTION_MARK_COLOR>> {
+        + id[PK]
         --
-        item_name
-        price
-        # category_id [FK]
-        image
-        detail
-        del_flag
-        reg_date
+        img
+        img_name
+        user_name
     }
     
-    entity "カテゴリマスタ" as category <m_category> <<M,MASTER_MARK_COLOR>> {
-        + category_id [PK]
+    entity "参加済みマスタ" as join <join> <<M,MASTER_MARK_COLOR>> {
+        + j_id [PK]
         --
-        name
-        reg_date
+        j_name
+        j_place1
+        j_place2
+        j_info
+        j_comp
+        j_day
+    }
+    
+    entity "開発者マスタ" as developer <developer> <<M,MASTER_MARK_COLOR>> {
+        + co_id [PK]
+        --
+        co_name
+        co_user
+        co_pass
     }
   }
   
   customer       |o-ri-o{     order
-order          ||-ri-|{     order_detail
-order_detail    }-do-||     items
-items          }o-le-||     category
+order          ||-ri-|{     volunteer
+volunteer          ||-ri-|{  volunteer_pic
+volunteer  }-do-||     join
+join          }o-le-||     developer
 
 
 @enduml
